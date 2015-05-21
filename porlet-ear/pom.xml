@@ -43,7 +43,7 @@
 							<user>${wls.username}</user>
 							<password>${wls.password}</password>
 							<upload>true</upload>
-							<action>deploy</action>
+							<action>redeploy</action>
 							<remote>false</remote>
 							<verbose>true</verbose>
 							<source>${project.build.directory}/${project.parent.artifactId}.${project.packaging}</source>

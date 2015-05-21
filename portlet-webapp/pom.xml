@@ -60,6 +60,17 @@
 			<artifactId>zhtml</artifactId>
 			<version>${zk.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.portlet</groupId>
+			<artifactId>portlet-api</artifactId>
+			<version>2.0</version>
+		</dependency>
+
 	</dependencies>
 	<build>
 		<finalName>${project.artifactId}</finalName>
@@ -69,8 +80,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.3.2</version>
 				<configuration>
-					<source>1.4</source>
-					<target>1.4</target>
+					<source>1.7</source>
+					<target>1.7</target>
 				</configuration>
 			</plugin>
 			<plugin>

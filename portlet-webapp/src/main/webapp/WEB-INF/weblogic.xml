@@ -1,0 +1,7 @@
+<?xml version = '1.0' encoding = 'UTF-8' standalone = 'yes'?>
+<weblogic-web-app xmlns="http://www.bea.com/ns/weblogic/weblogic-web-app" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.bea.com/ns/weblogic/weblogic-web-app http://www.bea.com/ns/weblogic/weblogic-web-app/1.0/weblogic-web-app.xsd">
+   <context-root>zkoss-portlet</context-root>
+   <library-ref>
+      <library-name>oracle.portlet-producer.wsrp</library-name>
+   </library-ref>
+</weblogic-web-app>
