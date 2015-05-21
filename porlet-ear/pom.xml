@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<artifactId>zkoss-wsrp</artifactId>
+		<groupId>com.otr</groupId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>porlet-ear</artifactId>
+	<packaging>ear</packaging>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.otr</groupId>
+			<artifactId>portlet-webapp</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<type>war</type>
+		</dependency>
+	</dependencies>
+
+	<properties>
+		<wls.hostname>localhost</wls.hostname>
+		<wls.port>7101</wls.port>
+		<wls.username>weblogic</wls.username>
+		<wls.password>weblogic1</wls.password>
+		<wls.server.name>DefaultServer</wls.server.name>
+	</properties>
+
+	<profiles>
+		<profile>
+			<id>deploy_weblogic</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>com.oracle.weblogic</groupId>
+						<artifactId>weblogic-maven-plugin</artifactId>
+						<version>10.3.4</version>
+						<configuration>
+							<adminurl>t3://${wls.hostname}:${wls.port}</adminurl>
+							<user>${wls.username}</user>
+							<password>${wls.password}</password>
+							<upload>true</upload>
+							<action>deploy</action>
+							<remote>false</remote>
+							<verbose>true</verbose>
+							<source>${project.build.directory}/${project.parent.artifactId}.${project.packaging}</source>
+							<name>${project.parent.artifactId}</name>
+							<targets>${wls.server.name}</targets>
+						</configuration>
+
+						<executions>
+							<execution>
+								<phase>install</phase>
+								<goals>
+									<goal>redeploy</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-ear-plugin</artifactId>
+				<version>2.6</version>
+				<configuration>
+					<finalName>${project.parent.artifactId}</finalName>
+					<modules>
+						<webModule>
+							<groupId>com.otr</groupId>
+							<artifactId>portlet-webapp</artifactId>
+							<bundleFileName>portlet-webapp.war</bundleFileName>
+						</webModule>
+					</modules>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

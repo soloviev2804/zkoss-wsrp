@@ -1,0 +1,15 @@
+*.gitingnore
+target
+*.iml
+*.ipr
+.idea
+*.iws
+*.backup
+.classpath
+.project
+.settings
+.externalToolBuilders
+maven-eclipse.xml
+*.logfile
+
+*~
