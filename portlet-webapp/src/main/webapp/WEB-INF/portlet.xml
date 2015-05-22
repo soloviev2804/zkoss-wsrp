@@ -14,11 +14,6 @@
 			</preference>
 		</portlet-preferences>
 		<expiration-cache>0</expiration-cache>
-		<!--<portlet-class>oracle.portlet.bridge.adf.application.ADFBridgePortlet</portlet-class>-->
-		<!--<init-param>-->
-		<!--<name>oracle.portlet.bridge.adf.SetViewToConsumerLocale</name>-->
-		<!--<value>true</value>-->
-		<!--</init-param>-->
 		<supports>
 			<mime-type>text/html</mime-type>
 			<portlet-mode>VIEW</portlet-mode>
@@ -52,4 +47,13 @@
 	<custom-portlet-mode>
 		<portlet-mode>print</portlet-mode>
 	</custom-portlet-mode>
+	<filter>
+		<filter-name>zkPortletFilter</filter-name>
+		<filter-class>com.otr.WebcenterWsrpEncoderFixResourceFilter</filter-class>
+		<lifecycle>RESOURCE_PHASE</lifecycle>
+	</filter>
+	<filter-mapping>
+		<filter-name>zkPortletFilter</filter-name>
+		<portlet-name>zkPortletLoader</portlet-name>
+	</filter-mapping>
 </portlet-app>

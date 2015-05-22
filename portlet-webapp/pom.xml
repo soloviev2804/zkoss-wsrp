@@ -8,7 +8,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>portlet-webapp</artifactId>
 	<properties>
-		<zk.version>7.0.4.FL.20140916-Eval</zk.version>
+		<zk.version>7.0.1</zk.version>
 		<maven.build.timestamp.format>yyyy-MM-dd</maven.build.timestamp.format>
 		<packname>-1.0-SNAPSHOT-FL-${maven.build.timestamp}</packname>
 	</properties>
@@ -70,7 +70,17 @@
 			<artifactId>portlet-api</artifactId>
 			<version>2.0</version>
 		</dependency>
-
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>2.6</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>${project.artifactId}</finalName>

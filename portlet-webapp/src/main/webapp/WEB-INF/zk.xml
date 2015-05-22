@@ -19,11 +19,20 @@ Copyright (C) 2006 Potix Corporation. All Rights Reserved.
 	</preference>
 
 	<!-- Turn on if you want to debug JavaScript.
-		Once turned on, the uncompressed JavaScript files will be loaded.
-	<client-config>
-		<debug-js>true</debug-js>
-	</client-config>
-	-->
+		Once turned on, the uncompressed JavaScript files will be loaded.  -->
+	<!--<client-config>-->
+		<!--<debug-js>true</debug-js>-->
+	<!--</client-config>-->
+
+	<library-property>
+		<name>org.zkoss.web.servlet.http.URLEncoder</name>
+		<value>com.otr.PortletBridgeURLEncoder</value>
+	</library-property>
+	<library-property>
+		<name>org.zkoss.zk.WPD.cache</name>
+		<value>false</value>
+	</library-property>
+
 	<!-- Uncomment if you turn off the caching of resources loaded from
 		the class path (aka., class Web resources).
 		By default, class Web resources are cached by the browser until
@@ -35,14 +44,14 @@ Copyright (C) 2006 Potix Corporation. All Rights Reserved.
 		<value>false</value>
 	</library-property>
 	-->
-	
+
 	<!-- Turn on if you want to cache by etag for dynamic resource.
 	<library-property>
 		<name>org.zkoss.web.classWebResource.cache.etag</name>
 		<value>true</value>
 	</library-property>
 	-->
-	
+
 	<!-- Uncomment if you want to control the number of hours that
 		the CSS files of class Web resources won't be changed.
 		By default, it is 8760 (the same as other class Web resouces).
@@ -156,7 +165,7 @@ Copyright (C) 2006 Potix Corporation. All Rights Reserved.
 		<value>false</value>
 	</library-property>
 	-->
-	
+
 	<!-- [ZK EE]
 		Turn on if you want to enable the render-on-demand feature for grid.
 		It improves the performance for huge grid.
@@ -211,7 +220,7 @@ Copyright (C) 2006 Potix Corporation. All Rights Reserved.
 	<listener>
 		<listener-class>org.zkoss.zkmax.ui.util.DesktopRecycle</listener-class>
 	</listener>
-	--> 
+	-->
 
 	<!-- [ZK EE]
 		Turn on if you want to make your Web application crawlable (indexed)
@@ -287,7 +296,7 @@ Copyright (C) 2006 Potix Corporation. All Rights Reserved.
 		<disable-event-thread>false</disable-event-thread>
 	</system-config>
 	-->
-	
+
 	<!-- Turn on the following if you want to use ZK with a clustering server
 		or cloud environment (such as Google App Engine)
 	<system-config>
@@ -407,7 +416,7 @@ Copyright (C) 2006 Potix Corporation. All Rights Reserved.
 		<value></value>
 	</preference>
 	-->
-	
+
 	<!-- Configure the default font size in ZUL CSS file (~./zul/css/zk.wcs)
 		Default: 12px.
 	<library-property>
@@ -472,7 +481,7 @@ Copyright (C) 2006 Potix Corporation. All Rights Reserved.
 		<value>mouse</value>
 	</library-property>
 	-->
-	
+
 	<!-- Uncommet to control the number of lines to log an error message.
 		Default: 6. If nonpostive is specified, the full stack traces are logged.
 		Notice that # of lines don't include packages starting with java, javax or sun.
@@ -538,14 +547,14 @@ Copyright (C) 2006 Potix Corporation. All Rights Reserved.
 		<listener-class>org.zkoss.zkplus.hibernate.HibernateSessionFactoryListener</listener-class>
 	</listener>
 	-->
-	
+
 	<!-- Configure the Hibernate configuration file name if not "hibernate.cfg.xml"
 	<preference>
 		<name>HibernateUtil.config</name>
 		<value></value>
 	</preference>
 	-->
-	
+
 	<!-- Configure the Hibernate "Open Session In View" Session Lifecycle
 	<listener>
 		<description>Hibernate "Open Session In View" Session Lifecycle</description>
@@ -561,13 +570,13 @@ Copyright (C) 2006 Potix Corporation. All Rights Reserved.
 		</listener-class>
 	</listener>
 	 -->
-	 	
-		<!-- Turn on if you want to debug by copying JavaScript files directly
-		to classpath
-	<desktop-config>
-		<extendlet-check-period>5</extendlet-check-period>
-	</desktop-config>
-	-->
+
+	<!-- Turn on if you want to debug by copying JavaScript files directly
+	to classpath
+<desktop-config>
+	<extendlet-check-period>5</extendlet-check-period>
+</desktop-config>
+-->
 
 	<!-- Turn on if you want to JSP 2.1 EL as the default interpreter
 	<xel-config>

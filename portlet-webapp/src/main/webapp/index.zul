@@ -1,4 +1,11 @@
-<zk>
+<?xml version="1.0" encoding="UTF-8"?>
+<zk xmlns="http://www.zkoss.org/2005/zul"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+	<!--<custom-attributes javax.zkoss.zk.lang.js.generated="true" scope="request"/>-->
+
+	<!--<script type="text/javascript" src="/zk.js.dsp"/>-->
+
 	<window title="Hello World!!" border="normal" width="500px"
 	        apply="com.otr.DemoWindowComposer">
 		<tree id="tree" rows="7" multiple="true" checkmark="true">
@@ -9,8 +16,12 @@
 			<treechildren>
 				<treeitem>
 					<treerow>
-						<treecell label="Item 1"/>
-						<treecell label="Item 1 description"/>
+						<treecell>
+							<button id="btn" label="Say Hello"/>
+						</treecell>
+						<treecell>
+							<label id="lb"/>
+						</treecell>
 					</treerow>
 				</treeitem>
 				<treeitem>
@@ -47,5 +58,12 @@
 				<treeitem label="Item 3"/>
 			</treechildren>
 		</tree>
+
+		<vlayout>
+			<div id="div">
+				<image id="picture"/>
+			</div>
+			<button id="showImgBtn" label="show image"/>
+		</vlayout>
 	</window>
 </zk>
