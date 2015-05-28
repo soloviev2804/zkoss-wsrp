@@ -1,19 +1,14 @@
 package com.otr;
 
 import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.MouseEvent;
-import org.zkoss.zk.ui.select.annotation.Listen;
-import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.util.GenericForwardComposer;
 import org.zkoss.zul.Button;
 import org.zkoss.zul.Filedownload;
 import org.zkoss.zul.Image;
 import org.zkoss.zul.Label;
 
-import javax.portlet.PortletRequest;
-import javax.servlet.http.HttpServletRequest;
-import java.io.FileNotFoundException;
+import java.util.Date;
 
 public class DemoWindowComposer extends GenericForwardComposer {
 
@@ -35,6 +30,6 @@ public class DemoWindowComposer extends GenericForwardComposer {
 	}
 
 	public void onClick$downloadBtn(MouseEvent event) {
-		Filedownload.save("plain text string".getBytes(),"text/plain","text.txt");
+		Filedownload.save(("plain text string" + new Date()).getBytes(), "text/plain", "text" + System.currentTimeMillis() + ".txt");
 	}
 }

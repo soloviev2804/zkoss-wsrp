@@ -63,7 +63,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import static com.otr.PortletBridgeURLEncoder.ORACLE_WEBCENTER_PORLET_RESPONSE;
+import static com.otr.PortletBridgeURLEncoder.ORACLE_WEBCENTER_PORTLET_RESPONSE;
 
 /**
  * The portlet used to process the request for a ZUML page.
@@ -150,7 +150,7 @@ public class DHtmlLayoutPortlet extends GenericPortlet {
 		try {
 			// Bug ZK-1179: process I18N in portlet environment
 			HttpServletRequest httpreq = RenderHttpServletRequest.getInstance(request);
-			httpreq.setAttribute(ORACLE_WEBCENTER_PORLET_RESPONSE, response);
+			httpreq.setAttribute(ORACLE_WEBCENTER_PORTLET_RESPONSE, response);
 			HttpServletResponse httpres = RenderHttpServletResponse.getInstance(response);
 
 			final Object old = I18Ns.setup(httpreq.getSession(), httpreq, httpres,
@@ -202,7 +202,7 @@ public class DHtmlLayoutPortlet extends GenericPortlet {
 		final Object old = I18Ns.setup(httpreq.getSession(), httpreq, httpres, "UTF-8");
 		SessionsCtrl.setCurrent(sess);
 		try {
-			httpreq.setAttribute(ORACLE_WEBCENTER_PORLET_RESPONSE, response);
+			httpreq.setAttribute(ORACLE_WEBCENTER_PORTLET_RESPONSE, response);
 			String resourceID = request.getResourceID();
 			String pathInfo = StringUtils.substringAfter(resourceID, "/zkau");
 			if (pathInfo.startsWith(ClassWebResource.PATH_PREFIX)) {
