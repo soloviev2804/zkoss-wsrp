@@ -2,9 +2,6 @@
 <zk xmlns="http://www.zkoss.org/2005/zul"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
-	<!--<custom-attributes javax.zkoss.zk.lang.js.generated="true" scope="request"/>-->
-
-	<!--<script type="text/javascript" src="/zk.js.dsp"/>-->
 
 	<window title="Hello World!!" border="normal" width="500px"
 	        apply="com.otr.DemoWindowComposer">
@@ -64,6 +61,23 @@
 				<image id="picture"/>
 			</div>
 			<button id="showImgBtn" label="show image"/>
+			<button id="downloadBtn" label="download"/>
+
+			<button label="Upload Image" upload="true,maxsize=300">
+       <attribute name="onUpload"><![CDATA[
+           org.zkoss.util.media.Media media = event.getMedia();
+           if (media instanceof org.zkoss.image.Image) {
+               org.zkoss.zul.Image image = new org.zkoss.zul.Image();
+               image.setContent(media);
+               image.setParent(pics);
+           } else {
+               Messagebox.show("Not an image: "+media, "Error", Messagebox.OK, Messagebox.ERROR);
+               break;
+           }
+       ]]></attribute>
+   </button>
+   <separator />
+   <vlayout id="pics" height="360px" style="overflow:auto" />
 		</vlayout>
 	</window>
 </zk>

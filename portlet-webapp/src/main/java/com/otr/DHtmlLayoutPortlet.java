@@ -14,8 +14,10 @@ import org.zkoss.web.portlet.RenderHttpServletRequest;
 import org.zkoss.web.portlet.RenderHttpServletResponse;
 import org.zkoss.web.portlet.ResourceHttpServletRequest;
 import org.zkoss.web.portlet.ResourceHttpServletResponse;
+import org.zkoss.web.servlet.Charsets;
 import org.zkoss.web.servlet.http.Encodes;
 import org.zkoss.web.util.resource.ClassWebResource;
+import org.zkoss.zk.au.http.AuExtension;
 import org.zkoss.zk.au.http.DHtmlUpdateServlet;
 import org.zkoss.zk.mesg.MZk;
 import org.zkoss.zk.ui.Desktop;
@@ -60,6 +62,8 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
+import static com.otr.PortletBridgeURLEncoder.ORACLE_WEBCENTER_PORLET_RESPONSE;
 
 /**
  * The portlet used to process the request for a ZUML page.
@@ -146,7 +150,7 @@ public class DHtmlLayoutPortlet extends GenericPortlet {
 		try {
 			// Bug ZK-1179: process I18N in portlet environment
 			HttpServletRequest httpreq = RenderHttpServletRequest.getInstance(request);
-			httpreq.setAttribute("oracle.webcenter.renderResponse", response);
+			httpreq.setAttribute(ORACLE_WEBCENTER_PORLET_RESPONSE, response);
 			HttpServletResponse httpres = RenderHttpServletResponse.getInstance(response);
 
 			final Object old = I18Ns.setup(httpreq.getSession(), httpreq, httpres,
@@ -198,14 +202,33 @@ public class DHtmlLayoutPortlet extends GenericPortlet {
 		final Object old = I18Ns.setup(httpreq.getSession(), httpreq, httpres, "UTF-8");
 		SessionsCtrl.setCurrent(sess);
 		try {
-
+			httpreq.setAttribute(ORACLE_WEBCENTER_PORLET_RESPONSE, response);
 			String resourceID = request.getResourceID();
-			if (resourceID.contains(ClassWebResource.PATH_PREFIX)) {
-				httpreq.setAttribute("oracle.webcenter.resourceResponse", response);
+			String pathInfo = StringUtils.substringAfter(resourceID, "/zkau");
+			if (pathInfo.startsWith(ClassWebResource.PATH_PREFIX)) {
 				String url = StringUtils.substringAfter(resourceID, ClassWebResource.PATH_PREFIX);
 				ClassWebResource webResource = webman.getClassWebResource();
 				webResource.service(httpreq, httpres, url);
 				return;
+			} else if (StringUtils.isNotEmpty(pathInfo)) {
+				String auExtensionName = pathInfo.substring(1, pathInfo.indexOf("/", 1));
+				final AuExtension aue = updateServlet.getAuExtension("/view");
+				if (aue == null) {
+					httpres.sendError(HttpServletResponse.SC_NOT_FOUND);
+					log.debug("Unknown path info: " + pathInfo);
+					return;
+				}
+
+				Charsets.setup(null, httpreq, httpres, "UTF-8");
+				try {
+					aue.service(httpreq, httpres, pathInfo);
+					if ("view".equals(auExtensionName)) {
+						response.setContentType("application/octet-stream");
+					}
+				} finally {
+					I18Ns.cleanup(httpreq, old);
+				}
+				return; //done
 			}
 
 			response.setProperty("Pragma", "no-cache");

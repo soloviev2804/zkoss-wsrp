@@ -7,11 +7,13 @@ import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.util.GenericForwardComposer;
 import org.zkoss.zul.Button;
+import org.zkoss.zul.Filedownload;
 import org.zkoss.zul.Image;
 import org.zkoss.zul.Label;
 
 import javax.portlet.PortletRequest;
 import javax.servlet.http.HttpServletRequest;
+import java.io.FileNotFoundException;
 
 public class DemoWindowComposer extends GenericForwardComposer {
 
@@ -30,5 +32,9 @@ public class DemoWindowComposer extends GenericForwardComposer {
 
 	public void onClick$showImgBtn(MouseEvent event) {
 		picture.setSrc("1.jpg");
+	}
+
+	public void onClick$downloadBtn(MouseEvent event) {
+		Filedownload.save("plain text string".getBytes(),"text/plain","text.txt");
 	}
 }
