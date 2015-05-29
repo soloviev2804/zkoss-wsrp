@@ -9,6 +9,7 @@ import org.zkoss.web.util.resource.ClassWebResource;
 import javax.portlet.MimeResponse;
 import javax.portlet.ResourceURL;
 import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
@@ -28,6 +29,8 @@ public class PortletBridgeURLEncoder implements Encodes.URLEncoder {
 	public static final String ORACLE_PORTLET_SERVER_USE_STATELESS_PROXYING = "oracle.portlet.server.useStatelessProxying";
 	public static final String ORACLE_WEBCENTER_PORTLET_RESPONSE = "oracle.webcenter.portlet.response";
 
+	public static final String CREATE_RESOURCE_URL = "create.resource.url";
+
 	@Override
 	public String encodeURL(final ServletContext ctx, final ServletRequest request, ServletResponse response, String url, Encodes.URLEncoder defaultEncoder) throws Exception {
 		final MimeResponse portletResponse = (MimeResponse) request.getAttribute(ORACLE_WEBCENTER_PORTLET_RESPONSE);
@@ -35,25 +38,18 @@ public class PortletBridgeURLEncoder implements Encodes.URLEncoder {
 			HttpServletResponseWrapper wrapper = new HttpServletResponseWrapper((HttpServletResponse) response) {
 				@Override
 				public String encodeURL(String url) {
+					if (request.getAttribute(CREATE_RESOURCE_URL) != null) {
+						return createResourceUrl(portletResponse, url);
+					}
+
 					String updateUrl = ctx.getContextPath() + "/zkau";
 					String pathInfo = StringUtils.substringAfter(url, updateUrl);
-					if (StringUtils.isNotEmpty(pathInfo)) {
-						boolean webResouce = pathInfo.startsWith(ClassWebResource.PATH_PREFIX);
-						boolean isAuExtension = !pathInfo.startsWith(ClassWebResource.PATH_PREFIX);
-						if (webResouce && (pathInfo.endsWith("wcs") || pathInfo.endsWith("zk.wpd"))) {
-							ResourceURL resourceURL = portletResponse.createResourceURL();
-							resourceURL.setResourceID(url);
-							resourceURL.setCacheability(ResourceURL.FULL);
-							return resourceURL.toString();
-						}
+					boolean isAuExtension = StringUtils.isNotEmpty(pathInfo) && !pathInfo.startsWith(ClassWebResource.PATH_PREFIX);
 
-						if (isAuExtension) {
-							ResourceURL resourceURL = portletResponse.createResourceURL();
-							resourceURL.setResourceID(url);
-							return resourceURL.toString();
-						}
-
-
+					if (isAuExtension) {
+						ResourceURL resourceURL = portletResponse.createResourceURL();
+						resourceURL.setResourceID(url);
+						return resourceURL.toString();
 					}
 					// Запрос ресурса через javax.portlet.ResourceServingPortlet.serveResource()
 					// zk.wcs zk.wpd файлы внутри которых есть урлы для rewrite
@@ -71,6 +67,21 @@ public class PortletBridgeURLEncoder implements Encodes.URLEncoder {
 		} else {
 			return defaultEncoder.encodeURL(ctx, request, response, url, defaultEncoder);
 		}
+	}
+
+	public static String createResourceUrl(ServletContext ctx, ServletRequest request, ServletResponse response, String uri) throws ServletException {
+		try {
+			request.setAttribute(CREATE_RESOURCE_URL, Boolean.TRUE);
+			return Encodes.encodeURL(ctx, request, response, uri);
+		} finally {
+			request.removeAttribute(CREATE_RESOURCE_URL);
+		}
+	}
+
+	private String createResourceUrl(MimeResponse portletResponse, String url) {
+		ResourceURL resourceURL = portletResponse.createResourceURL();
+		resourceURL.setResourceID(url);
+		return resourceURL.toString();
 	}
 
 }

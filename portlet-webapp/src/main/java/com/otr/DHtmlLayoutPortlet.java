@@ -154,8 +154,8 @@ public class DHtmlLayoutPortlet extends GenericPortlet {
 			HttpServletRequest httpServletRequest = RenderHttpServletRequest.getInstance(request);
 			// Без врапера не передается юзер агент в zkoss
 			HttpServletRequestWrapper httpreq = new PortletHttpServletRequestWithHeaders(httpServletRequest, request);
-
 			httpreq.setAttribute(ORACLE_WEBCENTER_PORTLET_RESPONSE, response);
+
 			HttpServletResponse httpres = RenderHttpServletResponse.getInstance(response);
 
 			final Object old = I18Ns.setup(httpreq.getSession(), httpreq, httpres,
@@ -293,8 +293,8 @@ public class DHtmlLayoutPortlet extends GenericPortlet {
 
 		try {
 			httpreq.setAttribute("javax.zkoss.zk.lang.js.generated", Boolean.TRUE);
-			response.getWriter().print("<script src=" + Encodes.encodeURL(svlctx, httpreq, httpres, "~./js/zk.wpd") + "></script>\n");
-			response.getWriter().print("<script src=" + Encodes.encodeURL(svlctx, httpreq, httpres, "~./js/zul.lang.wpd") + "></script>\n");
+			response.getWriter().print("<script src=" + PortletBridgeURLEncoder.createResourceUrl(svlctx, httpreq, httpres, "~./js/zk.wpd") + "></script>\n");
+			response.getWriter().print("<script src=" + PortletBridgeURLEncoder.createResourceUrl(svlctx, httpreq, httpres, "~./js/zul.lang.wpd") + "></script>\n");
 			response.getWriter().print("<script src=" + Encodes.encodeURL(svlctx, httpreq, httpres, "/zk.js.dsp") + "></script>\n");
 
 		} catch (ServletException e) {
