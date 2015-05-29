@@ -27,11 +27,6 @@
 		<wls.username>weblogic</wls.username>
 		<wls.password>weblogic1</wls.password>
 		<wls.server.name>DefaultServer</wls.server.name>
-		<!--<wls.hostname>eb-dev-portal.otr.ru</wls.hostname>-->
-		<!--<wls.port>7001</wls.port>-->
-		<!--<wls.username>wcadmin</wls.username>-->
-		<!--<wls.password>LKJoiu987</wls.password>-->
-		<!--<wls.server.name>WC_CustomServicesProducer</wls.server.name>-->
 	</properties>
 
 	<profiles>

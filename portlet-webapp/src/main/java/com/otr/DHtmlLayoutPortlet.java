@@ -47,6 +47,7 @@ import org.zkoss.zk.ui.util.DesktopRecycle;
 import javax.portlet.GenericPortlet;
 import javax.portlet.PortletException;
 import javax.portlet.PortletPreferences;
+import javax.portlet.PortletRequest;
 import javax.portlet.PortletSession;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
@@ -56,6 +57,7 @@ import javax.portlet.ResourceURL;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.Writer;
@@ -149,7 +151,10 @@ public class DHtmlLayoutPortlet extends GenericPortlet {
 		SessionsCtrl.setCurrent(sess);
 		try {
 			// Bug ZK-1179: process I18N in portlet environment
-			HttpServletRequest httpreq = RenderHttpServletRequest.getInstance(request);
+			HttpServletRequest httpServletRequest = RenderHttpServletRequest.getInstance(request);
+			// Без врапера не передается юзер агент в zkoss
+			HttpServletRequestWrapper httpreq = new PortletHttpServletRequestWithHeaders(httpServletRequest, request);
+
 			httpreq.setAttribute(ORACLE_WEBCENTER_PORTLET_RESPONSE, response);
 			HttpServletResponse httpres = RenderHttpServletResponse.getInstance(response);
 
@@ -180,7 +185,8 @@ public class DHtmlLayoutPortlet extends GenericPortlet {
 		final WebManager webman = getWebManager();
 		final WebApp wapp = webman.getWebApp();
 
-		final HttpServletRequest httpreq = ResourceHttpServletRequest.getInstance(request);
+		final HttpServletRequest httpServletRequest = ResourceHttpServletRequest.getInstance(request);
+		HttpServletRequestWrapper httpreq = new PortletHttpServletRequestWithHeaders(httpServletRequest, request);
 		final HttpServletResponse httpres = ResourceHttpServletResponse.getInstance(response);
 		final Session sess = getSession(request, false);
 
@@ -279,7 +285,8 @@ public class DHtmlLayoutPortlet extends GenericPortlet {
 		final WebApp wapp = webman.getWebApp();
 		final WebAppCtrl wappc = (WebAppCtrl) wapp;
 
-		final HttpServletRequest httpreq = RenderHttpServletRequest.getInstance(request);
+		final HttpServletRequest httpServletRequest = RenderHttpServletRequest.getInstance(request);
+		HttpServletRequestWrapper httpreq = new PortletHttpServletRequestWithHeaders(httpServletRequest, request);
 		final HttpServletResponse httpres = RenderHttpServletResponse.getInstance(response);
 		final ServletContext svlctx = wapp.getServletContext();
 
@@ -515,5 +522,24 @@ public class DHtmlLayoutPortlet extends GenericPortlet {
 			}
 		}
 		return null;
+	}
+
+	static class PortletHttpServletRequestWithHeaders extends HttpServletRequestWrapper {
+		private final PortletRequest portletRequest;
+
+		public PortletHttpServletRequestWithHeaders(HttpServletRequest request, PortletRequest portletRequest) {
+			super(request);
+			this.portletRequest = portletRequest;
+		}
+
+		@Override
+		public String getHeader(String name) {
+			final String value = portletRequest.getProperty(name);
+			if (value != null) {
+				return value;
+			}
+			return super.getHeader(name);
+
+		}
 	}
 }
