@@ -46,10 +46,8 @@ public class PortletBridgeURLEncoder implements Encodes.URLEncoder {
 					String pathInfo = StringUtils.substringAfter(url, updateUrl);
 					boolean isAuExtension = StringUtils.isNotEmpty(pathInfo) && !pathInfo.startsWith(ClassWebResource.PATH_PREFIX);
 
-					if (isAuExtension) {
-						ResourceURL resourceURL = portletResponse.createResourceURL();
-						resourceURL.setResourceID(url);
-						return resourceURL.toString();
+					if (isAuExtension || url.endsWith("wcs")) {
+						return createResourceUrl(portletResponse, url);
 					}
 					// Запрос ресурса через javax.portlet.ResourceServingPortlet.serveResource()
 					// zk.wcs zk.wpd файлы внутри которых есть урлы для rewrite
